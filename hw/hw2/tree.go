@@ -54,37 +54,31 @@
  
  // 递归n次, 每次操作均为O(1), 所以时间复杂度为O(n), 空间复杂度为O(1)
  func (a *binaryTree) Traversal(str string, f func(tree *binaryTree) bool) {
-	 ok := true
- 
 	 var traversal func(*binaryTree)
 	 traversal = func(b *binaryTree) {
-		 // pre
-		 if nil == b || !ok {
+	 	 if nil == b {
 			 return
 		 }
+
+		 if !f(b) {
+			 return
+		 }
+
 		 if str == "pre" {
 			 fmt.Print(b.data, " ")
 		 }
  
 		 // /in
 		 traversal(b.left)
-		 if !ok {
-			 return
-		 }
 		 if str == "in" {
 			 fmt.Print(b.data, " ")
 		 }
  
 		 // post
 		 traversal(b.right)
-		 if !ok {
-			 return
-		 }
 		 if str == "post" {
 			 fmt.Print(b.data, " ")
 		 }
- 
-		 ok = f(b)
 	 }
  
 	 traversal(a)
@@ -282,7 +276,12 @@
 	// 后序遍历: 5 4 3 2 1				后序遍历: 5 4 3 2 1 10 9
 
 	// 第二题第一问
-	exampleFunc := func(tree *binaryTree) bool { return true }
+	exampleFunc := func(tree *binaryTree) bool {
+		if tree.data == 5 {
+			return false
+		}
+		return true
+	}
 
 	for _, i := range Trees {
 		for _, j := range orders {
@@ -292,7 +291,7 @@
 		fmt.Println()
 	}
 
-	fmt.Println()
+	fmt.Println("第二题")
 
 	// 第二题第二问
 	var iterators = make([]*iterator, len(Trees))
